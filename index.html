@@ -1,17 +1,32 @@
-<!DOCTYPE html>
-<html lang="zh">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JSON 检测与格式化</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
+            overflow: hidden; /* 防止出现滚动条 */
+        }
+        #header {
+            position: fixed; /* 固定在顶部 */
+            top: 0;
+            left: 0;
+            right: 0;
+            display: flex; /* 使用 flexbox 布局 */
+            justify-content: space-between; /* 在两端对齐 */
+            align-items: center; /* 垂直居中对齐 */
+            padding: 0px 20px; /* 内边距 */
+            z-index: 1000; /* 确保在其他元素之上 */
+        }
+        #currentTime {
+            font-size: 16px; 
+            background-color: rgba(255, 255, 255, 0.8); /* 背景色 */
+            padding: 5px; /* 内边距 */
+            border-radius: 5px; /* 圆角 */
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* 阴影 */
         }
         textarea {
             width: 100%;
-            height: 200px;
+            height: 150px; /* 调整高度以适应页面 */
+            margin-top: 60px; /* 为文本区域留出空间，避免被标题遮挡 */
             margin-bottom: 10px;
         }
         button {
@@ -23,17 +38,40 @@
             padding: 10px;
             border: 1px solid #ccc;
             overflow: auto;
+            max-height: 200px; /* 限制结果显示区域的高度 */
+            overflow-y: auto; /* 允许垂直滚动 */
+        }
+        .donation {
+            text-align: center;
         }
     </style>
 </head>
 <body>
-    <h1>JSON 检测与格式化工具</h1>
+    <div id="header">
+        <h1>JSON 检测与格式化工具</h1>
+        <div id="currentTime"></div> <!-- 时间显示元素 -->
+    </div>
     <textarea id="jsonInput" placeholder="请输入 JSON 字符串..."></textarea>
     <button onclick="checkAndFormatJSON()">检测并格式化 JSON</button>
     <h2>格式化结果：</h2>
     <pre id="result"></pre>
 
+    <div class="donation">
+        <h2>支持我们</h2>
+        <p>如果您喜欢这个工具，可以通过微信捐赠支持我们：</p>
+        <img src="./1.jpg" alt="微信收款码" style="max-width: 200px;">
+    </div>
+
     <script>
+        function updateTime() {
+            const now = new Date();
+            const options = { timeZone: 'Asia/Shanghai', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+            const timeString = now.toLocaleString('zh-CN', options);
+            document.getElementById('currentTime').textContent = timeString; // 更新当前时间
+        }
+
+        setInterval(updateTime, 1000); // 每秒更新一次时间
+
         function checkAndFormatJSON() {
             const input = document.getElementById('jsonInput').value;
             const resultElement = document.getElementById('result');
@@ -50,4 +88,3 @@
         }
     </script>
 </body>
-</html>
