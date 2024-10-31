@@ -43,6 +43,75 @@
         .donation {
             text-align: center;
         }
+
+        /* 抽奖相关样式 */
+        .lottery-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+        }
+
+        .lottery-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            min-width: 300px;
+        }
+
+        .close-button {
+            background-color: #808080;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        .close-button:hover {
+            background-color: #666666;
+        }
+
+        .lottery-button {
+            background-color: #f44336;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+        }
+
+        .prize-result {
+            font-size: 24px;
+            margin: 20px 0;
+            color: #f44336;
+        }
+
+        .donation-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+            font-size: 16px;
+        }
+
+        .donation-button:hover {
+            background-color: #45a049;
+        }
     </style>
 </head>
 <body>
@@ -59,6 +128,19 @@
         <h2>支持我们</h2>
         <p>如果您喜欢这个工具，可以通过微信捐赠支持我们：</p>
         <img src="/json-validator/1.png" alt="微信收款码" style="max-width: 200px;">
+        <br>
+        <button class="donation-button" onclick="showLotteryModal()">抽奖</button>
+    </div>
+
+    <!-- 抽奖模态框 -->
+    <div id="lotteryModal" class="lottery-modal">
+        <div class="lottery-content">
+            <h2>感谢支持！</h2>
+            <p>点击下方按钮开始抽奖</p>
+            <button class="lottery-button" onclick="startLottery()">开始抽奖</button>
+            <div id="prizeResult" class="prize-result"></div>
+            <button class="close-button" onclick="closeLotteryModal()">关闭</button>
+        </div>
     </div>
 
     <script>
@@ -84,6 +166,47 @@
             } catch (error) {
                 resultElement.textContent = '无效的 JSON 格式: ' + error.message; // 显示错误信息
             }
+        }
+
+        // 抽奖相关函数
+        function showLotteryModal() {
+            document.getElementById('lotteryModal').style.display = 'block';
+        }
+
+        function startLottery() {
+            const prizes = [
+                { name: "特等奖：免费使用高级功能1年", probability: 0.01 },
+                { name: "一等奖：免费使用高级功能6个月", probability: 0.05 },
+                { name: "二等奖：免费使用高级功能3个月", probability: 0.14 },
+                { name: "三等奖：免费使用高级功能1个月", probability: 0.3 },
+                { name: "感谢参与", probability: 0.5 }
+            ];
+
+            const random = Math.random();
+            let probabilitySum = 0;
+            let result = prizes[prizes.length - 1].name;
+
+            for (const prize of prizes) {
+                probabilitySum += prize.probability;
+                if (random < probabilitySum) {
+                    result = prize.name;
+                    break;
+                }
+            }
+
+            document.getElementById('prizeResult').textContent = result;
+            // 移除自动关闭功能
+        }
+
+        // 添加手动关闭函数
+        function closeLotteryModal() {
+            document.getElementById('lotteryModal').style.display = 'none';
+            document.getElementById('prizeResult').textContent = ''; // 清空抽奖结果
+        }
+
+        // 监听微信支付成功的回调（这里需要根据实际的支付接口进行修改）
+        function onPaymentSuccess() {
+            showLotteryModal();
         }
     </script>
 </body>
