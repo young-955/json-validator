@@ -1,18 +1,19 @@
 <head>
+    <meta charset="UTF-8">
+    <title>JSON 检测与格式化工具</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
         }
         #header {
-            position: fixed; /* 固定在顶部 */
             top: 0;
             left: 0;
             right: 0;
             display: flex; /* 使用 flexbox 布局 */
             justify-content: space-between; /* 在两端对齐 */
             align-items: center; /* 垂直居中对齐 */
-            padding: 0px 20px; /* 内边距 */
+            padding: 0px 5px; /* 内边距 */
             z-index: 1000; /* 确保在其他元素之上 */
         }
         #currentTime {
@@ -25,7 +26,7 @@
         textarea {
             width: 100%;
             height: 150px; /* 调整高度以适应页面 */
-            margin-top: 60px; /* 为文本区域留出空间，避免被标题遮挡 */
+            margin-top: 10px; /* 为文本区域留出空间，避免被标题遮挡 */
             margin-bottom: 10px;
         }
         button {
@@ -116,16 +117,16 @@
 </head>
 <body>
     <div id="header">
-        <h1>JSON 检测与格式化工具</h1>
+        <h3>JSON 检测与格式化工具</h3>
         <div id="currentTime"></div> <!-- 时间显示元素 -->
     </div>
     <textarea id="jsonInput" placeholder="请输入 JSON 字符串..."></textarea>
     <button onclick="checkAndFormatJSON()">检测并格式化 JSON</button>
-    <h2>格式化结果：</h2>
+    <h3>格式化结果：</h3>
     <pre id="result"></pre>
 
     <div class="donation">
-        <h2>支持我们</h2>
+        <h3>支持我们</h3>
         <p>如果您喜欢这个工具，可以通过微信捐赠支持我们：</p>
         <img src="/json-validator/1.png" alt="微信收款码" style="max-width: 200px;">
         <br>
