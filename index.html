@@ -113,6 +113,25 @@
         .donation-button:hover {
             background-color: #45a049;
         }
+
+        .copy-button {
+            padding: 5px 10px;
+            font-size: 14px;
+            margin-left: 10px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 3px;
+        }
+
+        .copy-button:hover {
+            background-color: #45a049;
+        }
+
+        .copy-button:active {
+            background-color: #3d8b40;
+        }
     </style>
 </head>
 <body>
@@ -122,7 +141,8 @@
     </div>
     <textarea id="jsonInput" placeholder="请输入 JSON 字符串..."></textarea>
     <button onclick="checkAndFormatJSON()">检测并格式化 JSON</button>
-    <h3>格式化结果：</h3>
+    <button onclick="compressJSON()">JSON 压缩</button>
+    <h3>结果：<button onclick="copyResult()" class="copy-button">复制</button></h3>
     <pre id="result"></pre>
 
     <div class="donation">
@@ -169,6 +189,21 @@
             }
         }
 
+        function compressJSON() {
+            const input = document.getElementById('jsonInput').value;
+            const resultElement = document.getElementById('result');
+
+            try {
+                // 先解析 JSON 以验证格式是否正确
+                const json = JSON.parse(input);
+                // 压缩 JSON（去除所有空格和换行）
+                const compressedJSON = JSON.stringify(json);
+                resultElement.textContent = compressedJSON;
+            } catch (error) {
+                resultElement.textContent = '无效的 JSON 格式: ' + error.message;
+            }
+        }
+
         // 抽奖相关函数
         function showLotteryModal() {
             document.getElementById('lotteryModal').style.display = 'block';
@@ -208,6 +243,28 @@
         // 监听微信支付成功的回调（这里需要根据实际的支付接口进行修改）
         function onPaymentSuccess() {
             showLotteryModal();
+        }
+
+        function copyResult() {
+            const resultText = document.getElementById('result').textContent;
+            // 检查是否有内容以及是否为错误信息
+            if (!resultText || resultText.startsWith('无效的 JSON')) {
+                alert('没有可复制的内容');
+                return;
+            }
+
+            navigator.clipboard.writeText(resultText)
+                .then(() => {
+                    const copyButton = document.querySelector('.copy-button');
+                    const originalText = copyButton.textContent;
+                    copyButton.textContent = '已复制！';
+                    setTimeout(() => {
+                        copyButton.textContent = originalText;
+                    }, 2000);
+                })
+                .catch(err => {
+                    alert('复制失败: ' + err);
+                });
         }
     </script>
 </body>
